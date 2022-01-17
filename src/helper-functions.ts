@@ -113,9 +113,3 @@ export const main = async(inputBuffer : Buffer, requestBody : opJSONBodyInterfac
     Object.keys(opJSON).forEach((k) => opJSON[k] == null && delete opJSON[k]);
     return opJSON;
 }
-
-export const deleteImgFile = async()=> {
-    unlink('./input.jpg', (err) => {
-        if (err) throw err;
-    });
-}

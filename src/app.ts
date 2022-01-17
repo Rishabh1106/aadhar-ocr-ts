@@ -1,10 +1,8 @@
 import express from 'express';
 const app = express();
 import {reqResLogger} from "./logger/req_res_logger";
-import vision from '@google-cloud/vision';
 
-
-import {uploadFile,deleteImgFile, main} from './helper-functions';
+import {uploadFile, main} from './helper-functions';
 import {errorResponder} from './middleware/errorMiddleware';
 import {errorLoggerWinston} from './middleware/loggerMiddleware';
 import { ValidationError } from './middleware/customErrorClass';
@@ -24,19 +22,12 @@ const keyJSON = {
     "client_x509_cert_url": process.env.client_x509_cert_url
 }
 
-const client = new vision.ImageAnnotatorClient({
-    credentials: keyJSON
-});
-
-
 app.post('', uploadFile, async (req, res,next) => {
     try{
         if(Object.keys(req.body).length === 0){
             throw new ValidationError("Please give fields required",400);
         } else{
         const resJSON = await main(req.file.buffer,req.body);
-        console.log(resJSON);
-        //deleteImgFile(); // deleting the file
         res.status(200).json(resJSON)
         }
     } catch(err){
@@ -44,12 +35,8 @@ app.post('', uploadFile, async (req, res,next) => {
     }
 })
 
-app.post('/test', uploadFile, async (req, res,next) => {
-    console.log("Buffer :",req.file.buffer)
-    const results = await client.textDetection({
-        image: { content: req.file.buffer }
-      });
-      console.log(results[0].textAnnotations)
+app.post('/test', async (req, res,next) => {
+    console.log(keyJSON)
     res.send("this is a test route")
 })
 
