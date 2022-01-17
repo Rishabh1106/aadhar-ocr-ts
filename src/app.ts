@@ -24,7 +24,7 @@ app.post('', uploadFile, async (req, res,next) => {
     }
 })
 
-app.get('/test', uploadFile, async (req, res,next) => {
+app.post('/test', uploadFile, async (req, res,next) => {
     res.send("this is a test route")
 })
 
