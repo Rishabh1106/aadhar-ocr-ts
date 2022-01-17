@@ -3,19 +3,7 @@ import vision from '@google-cloud/vision';
 import Jimp from 'jimp';
 import multer from 'multer'
 import { error } from 'console';
-import { unlink } from 'fs';
-var _ = require('lodash');
-
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, '')
-    },
-    filename: function (req, file, cb) {
-        cb(null, 'input.jpg')
-    }
-})
-
+var _ = require('lodash')
 export const uploadFile= (req, res, next) => {
     const upload =  multer().single('file');
     upload(req, res, function (err) {
@@ -35,7 +23,7 @@ interface opJSONBodyInterface {
     photo : string
 }
 
-const keyJSON = {
+export const keyJSON = {
     "type": process.env.type,
     "project_id": process.env.project_id,
     "private_key_id": process.env.private_key_id,
