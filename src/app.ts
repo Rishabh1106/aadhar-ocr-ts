@@ -32,11 +32,11 @@ const client = new vision.ImageAnnotatorClient({
 app.post('', uploadFile, async (req, res,next) => {
     try{
         if(Object.keys(req.body).length === 0){
-            console.log("test")
             throw new ValidationError("Please give fields required",400);
         } else{
-        const resJSON = await main('./input.jpg',req.body);
-        deleteImgFile(); // deleting the file
+        const resJSON = await main(req.file.buffer,req.body);
+        console.log(resJSON);
+        //deleteImgFile(); // deleting the file
         res.status(200).json(resJSON)
         }
     } catch(err){
@@ -45,7 +45,11 @@ app.post('', uploadFile, async (req, res,next) => {
 })
 
 app.post('/test', uploadFile, async (req, res,next) => {
-    const results = await client.textDetection('./input.jpg');
+    console.log("Buffer :",req.file.buffer)
+    const results = await client.textDetection({
+        image: { content: req.file.buffer }
+      });
+      console.log(results[0].textAnnotations)
     res.send("this is a test route")
 })
 

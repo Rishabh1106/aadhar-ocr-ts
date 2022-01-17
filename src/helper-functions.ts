@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 })
 
 export const uploadFile= (req, res, next) => {
-    const upload =  multer({ storage: storage }).single('file');
+    const upload =  multer().single('file');
     upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
         } else if (err) {
@@ -52,15 +52,15 @@ const client = new vision.ImageAnnotatorClient({
     credentials: keyJSON
 });
 
-export const detectFaces = async (inputFile:string) => {
-    const request = { image: { source: { filename: inputFile } } };
+export const detectFaces = async (imageBuffer:Buffer) => {
+    const request = { image: { content: imageBuffer } };
     const results = await client.faceDetection(request);
     const faces = results[0].faceAnnotations;
     return faces;
 }
 
-export const funcJimp = async (x : number, y : number, w : number, h : number, img : string) => {
-    const image = await Jimp.read(img);
+export const funcJimp = async (x : number, y : number, w : number, h : number, imageBuffer : Buffer) => {
+    const image = await Jimp.read(imageBuffer);
     if(!image){
         throw new error("Jimp can not able to read the image");
     }
@@ -68,7 +68,7 @@ export const funcJimp = async (x : number, y : number, w : number, h : number, i
     return imageBase64;
 }
 
-export const main = async(inputFile: string, requestBody : opJSONBodyInterface) => {
+export const main = async(inputBuffer : Buffer, requestBody : opJSONBodyInterface) => {
 
     const opJSON : opJSONBodyInterface = {
         name : null,
@@ -77,7 +77,9 @@ export const main = async(inputFile: string, requestBody : opJSONBodyInterface) 
         gender  : null,
         photo : null
     }
-    const results = await client.textDetection(inputFile);
+    const results = await client.textDetection({
+        image: { content: inputBuffer }
+      });
     const result = results[0].textAnnotations;
     
     if(requestBody.aadharNo=='true'){
@@ -100,12 +102,12 @@ export const main = async(inputFile: string, requestBody : opJSONBodyInterface) 
     }
 
     if(requestBody.photo=='true'){
-        const faces = await detectFaces(inputFile);
+        const faces = await detectFaces(inputBuffer);
         const x0 = faces[0].boundingPoly.vertices[0].x;
         const y0 = faces[0].boundingPoly.vertices[0].y;
         const x2 = faces[0].boundingPoly.vertices[2].x;
         const y2 = faces[0].boundingPoly.vertices[2].y;
-        const encoded = await funcJimp(x0, y0, x2 - x0, y2 - y0, inputFile);
+        const encoded = await funcJimp(x0, y0, x2 - x0, y2 - y0, inputBuffer);
         opJSON.photo = encoded;
     }
     Object.keys(opJSON).forEach((k) => opJSON[k] == null && delete opJSON[k]);
