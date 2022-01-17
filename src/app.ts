@@ -35,10 +35,11 @@ app.post('', uploadFile, async (req, res,next) => {
     }
 })
 
-app.post('/test', async (req, res,next) => {
+app.get('/test', async (req, res) => {
     console.log(keyJSON)
     res.send("this is a test route")
 })
+
 
 app.use(errorLoggerWinston);
 app.use(errorResponder);
