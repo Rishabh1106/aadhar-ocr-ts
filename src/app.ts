@@ -22,9 +22,10 @@ app.post('', uploadFile, async (req, res,next) => {
     }
 })
 
+
 app.get('/test', async (req, res) => {
-    console.log(keyJSON)
-    res.send("this is a test route")
+    //console.log(keyJSON)
+    res.send("this is a test route to test the whether this is working on not on heroku")
 })
 
 app.use(errorLoggerWinston);
