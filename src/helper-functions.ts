@@ -3,6 +3,8 @@ import vision from '@google-cloud/vision';
 import Jimp from 'jimp';
 import multer from 'multer'
 import { error } from 'console';
+import { verifyCard } from './verify-card-type';
+import { extractAadharName, extractAadharNo, extractDOB, extractGender, extractPanNo } from './extract-fields';
 var _ = require('lodash')
 export const uploadFile= (req, res, next) => {
     const upload =  multer().single('file');
@@ -19,6 +21,7 @@ interface opJSONBodyInterface {
     name : string,
     dob : string,
     aadharNo : string,
+    panNo : string,
     gender  : string,
     photo : string
 }
@@ -57,11 +60,11 @@ export const funcJimp = async (x : number, y : number, w : number, h : number, i
 }
 
 export const main = async(inputBuffer : Buffer, requestBody : opJSONBodyInterface) => {
-
     const opJSON : opJSONBodyInterface = {
         name : null,
         dob : null,
         aadharNo : null,
+        panNo : null,
         gender  : null,
         photo : null
     }
@@ -69,24 +72,30 @@ export const main = async(inputBuffer : Buffer, requestBody : opJSONBodyInterfac
         image: { content: inputBuffer }
       });
     const result = results[0].textAnnotations;
+
+    // verify-card-type // return aadhar,pan,other
     
-    if(requestBody.aadharNo=='true'){
-        const aadharNo = result[0].description.match(/(\d+){4}\s(\d+){4}\s(\d+){4}/);
-        opJSON.aadharNo = aadharNo[0];
-    }
-    if(requestBody.dob=='true'){
-        const dob = result[0].description.match(/(\d){2}\/(\d{2})\/(\d{4})/);
-        opJSON.dob = dob[0];
-    }
-    if(requestBody.gender=='true'){
-        const gender = result[0].description.match(/(MALE|FEMALE|Male|Female)/)
-        opJSON.gender = gender[0];
+    const cardType = verifyCard(result[0].description);
+    if(cardType=="aadhar"){
+        if(requestBody.aadharNo=='true'){
+            opJSON.aadharNo = extractAadharNo(result[0].description);
+        }
+        if(requestBody.name=='true'){
+            opJSON.name = extractAadharName(result[0].description);
+        }
     }
 
-    if(requestBody.name=='true'){
-        const names = result[0].description.match(/([A-Z])([a-z])+/g)
-        _.remove(names, function (n:string) { return n === "Government" || n === "India" || n === "Date" || n === "Birth" || n === "Male" || n === "Female"; });
-        opJSON.name = _.join(names, ' ');
+    if(cardType=="pan"){
+        if(requestBody.panNo=='true'){
+        opJSON.panNo = extractPanNo(result[0].description);
+        }
+    }
+
+    if(requestBody.dob=='true'){
+        opJSON.dob = extractDOB(result[0].description)
+    }
+    if(requestBody.gender=='true'){
+        opJSON.gender = extractGender(result[0].description);
     }
 
     if(requestBody.photo=='true'){
