@@ -49,7 +49,7 @@ export const funcJimp = async (x : number, y : number, w : number, h : number, i
     return imageBase64;
 }
 
-export const main = async(inputBuffer : Buffer, requestBody : opJSONBodyInterface) => {
+export const main = async(inputBuffer : Buffer) => {
     const opJSON : opJSONBodyInterface = {
         name : null,
         dob : null,
@@ -67,36 +67,30 @@ export const main = async(inputBuffer : Buffer, requestBody : opJSONBodyInterfac
     
     const cardType = verifyCard(result[0].description);
     if(cardType=="aadhar"){
-        if(requestBody.aadharNo=='true'){
             opJSON.aadharNo = extractAadharNo(result[0].description);
-        }
-        if(requestBody.name=='true'){
             opJSON.name = extractAadharName(result[0].description);
-        }
+
+            // how I will call that here
+            // I have 2 files config and final extractor
+            // let's call the config file from here and from config file call the extractor
     }
 
     if(cardType=="pan"){
-        if(requestBody.panNo=='true'){
-        opJSON.panNo = extractPanNo(result[0].description);
+            opJSON.panNo = extractPanNo(result[0].description);
         }
-    }
+    
+    opJSON.dob = extractDOB(result[0].description)
+    opJSON.gender = extractGender(result[0].description);
+    
 
-    if(requestBody.dob=='true'){
-        opJSON.dob = extractDOB(result[0].description)
-    }
-    if(requestBody.gender=='true'){
-        opJSON.gender = extractGender(result[0].description);
-    }
-
-    if(requestBody.photo=='true'){
-        const faces = await detectFaces(inputBuffer);
-        const x0 = faces[0].boundingPoly.vertices[0].x;
-        const y0 = faces[0].boundingPoly.vertices[0].y;
-        const x2 = faces[0].boundingPoly.vertices[2].x;
-        const y2 = faces[0].boundingPoly.vertices[2].y;
-        const encoded = await funcJimp(x0, y0, x2 - x0, y2 - y0, inputBuffer);
-        opJSON.photo = encoded;
-    }
+    const faces = await detectFaces(inputBuffer);
+    const x0 = faces[0].boundingPoly.vertices[0].x;
+    const y0 = faces[0].boundingPoly.vertices[0].y;
+    const x2 = faces[0].boundingPoly.vertices[2].x;
+    const y2 = faces[0].boundingPoly.vertices[2].y;
+    const encoded = await funcJimp(x0, y0, x2 - x0, y2 - y0, inputBuffer);
+    opJSON.photo = encoded;
+    
     Object.keys(opJSON).forEach((k) => opJSON[k] == null && delete opJSON[k]);
     return opJSON;
 }

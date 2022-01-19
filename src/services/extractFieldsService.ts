@@ -17,7 +17,7 @@ export const extractDOB = (text:string) => {
 
 export const extractAadharName = (text:string) => {
     const splitLines = str => str.split(/\r?\n/);
-    const arr = splitLines(text);
+    const arr = splitLines(text)
     const idx = arr.findIndex((str)=> str.match(/(\d){2}\/(\d{2})\/(\d{4})/))
     console.log("Name : ",arr[idx-1]);
     return arr[idx-1];
