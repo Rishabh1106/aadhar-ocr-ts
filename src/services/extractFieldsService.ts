@@ -16,9 +16,11 @@ export const extractDOB = (text:string) => {
 }
 
 export const extractAadharName = (text:string) => {
-    const names = text.match(/([A-Z])([a-z])+/g)
-    _.remove(names, function (n:string) { return n === "Government" || n === "India" || n === "Date" || n === "Birth" || n === "Male" || n === "Female"; });
-    return _.join(names, ' ');
+    const splitLines = str => str.split(/\r?\n/);
+    const arr = splitLines(text);
+    const idx = arr.findIndex((str)=> str.match(/(\d){2}\/(\d{2})\/(\d{4})/))
+    console.log("Name : ",arr[idx-1]);
+    return arr[idx-1];
 }
 
 export const extractGender = (text:string) => {
