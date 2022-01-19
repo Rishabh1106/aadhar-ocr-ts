@@ -5,7 +5,7 @@ import {errorResponder} from './middleware/errorMiddleware';
 import {errorLoggerWinston} from './middleware/loggerMiddleware';
 import router from './routers/apiRoutes';
 
-app.use(reqResLogger);
+//app.use(reqResLogger);
 
 app.use('/api',router);
 

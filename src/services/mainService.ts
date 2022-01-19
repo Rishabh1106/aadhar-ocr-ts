@@ -4,6 +4,7 @@ import Jimp from 'jimp';
 import { error } from 'console';
 import { verifyCard } from './verifyCardService';
 import { extractAadharName, extractAadharNo, extractDOB, extractGender, extractPanNo } from './extractFieldsService';
+import { aadharConfigFunc } from '../card-config/aadhar-config';
 var _ = require('lodash')
 
 
@@ -67,6 +68,8 @@ export const main = async(inputBuffer : Buffer) => {
     
     const cardType = verifyCard(result[0].description);
     if(cardType=="aadhar"){
+
+            aadharConfigFunc(result[0].description);
             opJSON.aadharNo = extractAadharNo(result[0].description);
             opJSON.name = extractAadharName(result[0].description);
 

@@ -27,4 +27,4 @@ export const extractGender = (text:string) => {
     const gender = text.match(/(MALE|FEMALE|Male|Female)/)
     return gender[0];
 }
-
+ 
