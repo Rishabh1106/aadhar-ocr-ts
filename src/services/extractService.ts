@@ -8,17 +8,16 @@ interface resObj {
     [key: string]: any
 }
 
-export const extractFunction = (configObject : Object,text:string)=>{
+export const extractFunction = async (configObject : Object,text:string,inputBuffer:Buffer)=>{
     const resObj : resObj = {};
 
     for(const key of Object.keys(configObject)){
-        //console.log(key,configObject[key](text));
-        if(key!=='name'){
+        if(key!=='photo'){
             resObj[key] = configObject[key](text);
-        }else{
-            
+        }
+        else{
+            resObj[key] = await configObject[key](inputBuffer)
         }
     }
-    console.log(resObj);
     return resObj;
 }

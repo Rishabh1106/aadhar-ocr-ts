@@ -9,10 +9,6 @@ import router from './routers/apiRoutes';
 
 app.use('/api',router);
 
-app.get('/test', async (req, res) => {
-    res.send("this is a test route to test the whether this is working on heroku")
-})
-
 app.use(errorLoggerWinston);
 app.use(errorResponder);
 

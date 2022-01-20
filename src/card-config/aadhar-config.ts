@@ -1,8 +1,8 @@
 // the idea is to make the fields and rules to find.
 // lets make an object which will have field and function need to run in order to find that field in text description.
 
-import { text } from "express";
-import { extractFunction } from "../services/finalService";
+import { extractFunction } from "../services/extractService";
+import { photoExtraction } from "./generalFunctions";
 
 const aadharConfig = {
     aadharNumber : (text:string)=>{
@@ -23,12 +23,14 @@ const aadharConfig = {
         const idx = arr.findIndex((str)=> str.match(/(\d){2}\/(\d{2})\/(\d{4})/))
         console.log("Name : ",arr[idx-1]);
         return arr[idx-1];
+    },
+    photo : async (inputBuffer:Buffer)=>{
+        const encoded = await photoExtraction(inputBuffer);
+        return encoded;
     }
     
 } 
 
-export const aadharConfigFunc = (text:string) => {
-    extractFunction(aadharConfig,text);
+export const aadharConfigFunc = (text:string,inputBuffer:Buffer) => {
+    return extractFunction(aadharConfig,text,inputBuffer);
 }
-
-
