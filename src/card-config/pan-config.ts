@@ -1,7 +1,6 @@
-import { extractFunction } from "../services/extractService";
 import { photoExtraction } from "./generalFunctions";
 
-const panConfig = {
+export const panConfig = {
     panNumber : (text:string)=>{
         const aadharno = text.match(/[A-Z]{5}[0-9]{4}[A-Z]{1}/);
         return aadharno[0];
@@ -25,10 +24,5 @@ const panConfig = {
     photo : async (inputBuffer:Buffer)=>{
         const encoded = await photoExtraction(inputBuffer);
         return encoded;
-    }
-    
+    }    
 } 
-
-export const panConfigFunc = (text:string,inputBuffer:Buffer) => {
-    return extractFunction(panConfig,text,inputBuffer);
-}

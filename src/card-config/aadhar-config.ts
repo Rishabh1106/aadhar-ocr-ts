@@ -1,10 +1,6 @@
-// the idea is to make the fields and rules to find.
-// lets make an object which will have field and function need to run in order to find that field in text description.
-
-import { extractFunction } from "../services/extractService";
 import { photoExtraction } from "./generalFunctions";
 
-const aadharConfig = {
+export const aadharConfig = {
     aadharNumber : (text:string)=>{
         const aadharno = text.match(/(\d+){4}\s(\d+){4}\s(\d+){4}/);
         return aadharno[0];
@@ -30,7 +26,3 @@ const aadharConfig = {
     }
     
 } 
-
-export const aadharConfigFunc = (text:string,inputBuffer:Buffer) => {
-    return extractFunction(aadharConfig,text,inputBuffer);
-}

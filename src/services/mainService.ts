@@ -3,18 +3,11 @@ import vision from '@google-cloud/vision';
 import Jimp from 'jimp';
 import { error } from 'console';
 import { verifyCard } from './verifyCardService';
-import { aadharConfigFunc } from '../card-config/aadhar-config';
-import { panConfigFunc } from '../card-config/pan-config';
-var _ = require('lodash')
+import { extractFunction } from './extractService';
+import { aadharConfig } from '../card-config/aadhar-config';
+import { panConfig } from '../card-config/pan-config';
 
-interface opJSONBodyInterface {
-    name : string,
-    dob : string,
-    aadharNo : string,
-    panNo : string,
-    gender  : string,
-    photo : string
-}
+var _ = require('lodash')
 
 export const keyJSON = {
     "type": process.env.type,
@@ -50,20 +43,16 @@ export const funcJimp = async (x : number, y : number, w : number, h : number, i
 }
 
 export const main = async(inputBuffer : Buffer) => {
-    
     const results = await client.textDetection({
         image: { content: inputBuffer }
       });
     const result = results[0].textAnnotations;
-    
     const cardType = verifyCard(result[0].description);
-
     if(cardType=="aadhar"){
-       return aadharConfigFunc(result[0].description,inputBuffer);
+       return extractFunction(aadharConfig,result[0].description,inputBuffer)
     }
 
     if(cardType=="pan"){
-        return panConfigFunc(result[0].description,inputBuffer)
+        return extractFunction(panConfig,result[0].description,inputBuffer)
     }
-
 }
