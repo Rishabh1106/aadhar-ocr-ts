@@ -2,12 +2,12 @@ import * as dotenv from "dotenv";
 dotenv.config();
 import vision from "@google-cloud/vision";
 import Jimp from "jimp";
-import _ from 'lodash';
+import _ from "lodash";
 import { error } from "console";
 import { verifyCard } from "./verifyCardService";
 import { extractFunction } from "./extractService";
-import { aadharConfig } from "../card-config/aadhar-config";
-import { panConfig } from "../card-config/pan-config";
+import { supportedCards } from "../card-config/supportedCard-config";
+import { cardVerifyConfig } from "../card-config/card-verify-config";
 
 export const keyJSON = {
   type: process.env.type,
@@ -29,7 +29,7 @@ const client = new vision.ImageAnnotatorClient({
 export const detectFaces = async (imageBuffer: Buffer) => {
   const request = { image: { content: imageBuffer } };
   const results = await client.faceDetection(request);
-  const faces = results[0].faceAnnotations;
+  const faces = _.first(results).faceAnnotations;
   return faces;
 };
 
@@ -56,11 +56,6 @@ export const main = async (inputBuffer: Buffer) => {
   });
   const result = _.first(results).textAnnotations;
   const description = _.first(result).description;
-  const cardType = verifyCard(description);
-  if (cardType == "aadhar") {
-    return extractFunction(aadharConfig, description, inputBuffer);
-  }
-  if (cardType == "pan") {
-    return extractFunction(panConfig, description, inputBuffer);
-  }
+  const cardType = verifyCard(description, cardVerifyConfig);
+  return extractFunction(supportedCards[cardType], description, inputBuffer);
 };
