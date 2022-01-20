@@ -1,6 +1,6 @@
 export interface ValidationError {
   statusCode?: number;
-  message :string
+  message: string;
 }
 
 export class ValidationError extends Error {
@@ -16,6 +16,6 @@ export const handleError = (err, res) => {
   res.status(statusCode).json({
     status: "error",
     statusCode,
-    message
+    message,
   });
 };

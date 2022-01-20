@@ -1,14 +1,10 @@
 import { Request, Response } from "express";
-import { handleError,} from "./customErrorClass";
+import { handleError } from "./customErrorClass";
 
-export const errorResponder = (
-  err,
-  req: Request,
-  res: Response
-) => {
-  if(err.code === "ENOENT"){
+export const errorResponder = (err, req: Request, res: Response) => {
+  if (err.code === "ENOENT") {
     const msg = `file is not uploaded`;
-    res.status(500).send(msg)
+    res.status(500).send(msg);
   }
-  handleError(err,res);
+  handleError(err, res);
 };
