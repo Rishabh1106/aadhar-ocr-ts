@@ -1,6 +1,8 @@
-require("dotenv").config();
+import * as dotenv from "dotenv";
+dotenv.config();
 import vision from "@google-cloud/vision";
 import Jimp from "jimp";
+import _ from 'lodash';
 import { error } from "console";
 import { verifyCard } from "./verifyCardService";
 import { extractFunction } from "./extractService";
@@ -52,12 +54,13 @@ export const main = async (inputBuffer: Buffer) => {
   const results = await client.textDetection({
     image: { content: inputBuffer },
   });
-  const result = results[0].textAnnotations;
-  const cardType = verifyCard(result[0].description);
+  const result = _.first(results).textAnnotations;
+  const description = _.first(result).description;
+  const cardType = verifyCard(description);
   if (cardType == "aadhar") {
-    return extractFunction(aadharConfig, result[0].description, inputBuffer);
+    return extractFunction(aadharConfig, description, inputBuffer);
   }
   if (cardType == "pan") {
-    return extractFunction(panConfig, result[0].description, inputBuffer);
+    return extractFunction(panConfig, description, inputBuffer);
   }
 };
