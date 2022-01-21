@@ -8,6 +8,7 @@ import { verifyCard } from "./verifyCardService";
 import { extractFunction } from "./extractService";
 import { supportedCards } from "../card-config/supportedCard-config";
 import { cardVerifyConfig } from "../card-config/card-verify-config";
+import { ValidationError } from "../middleware/customErrorClass";
 
 export const keyJSON = {
   type: process.env.type,
@@ -54,8 +55,14 @@ export const main = async (inputBuffer: Buffer) => {
   const results = await client.textDetection({
     image: { content: inputBuffer },
   });
+  if (!results) {
+    throw new ValidationError("Error in fetching text from API", 401);
+  }
   const result = _.first(results).textAnnotations;
   const description = _.first(result).description;
   const cardType = verifyCard(description, cardVerifyConfig);
+  if (!cardType) {
+    throw new ValidationError("Card type can not be detected", 401);
+  }
   return extractFunction(supportedCards[cardType], description, inputBuffer);
 };

@@ -1,20 +1,15 @@
+import { cardVerifyConfig } from "../card-config/card-verify-config";
 import { main } from "../services/mainService";
 import { verifyCard } from "../services/verifyCardService";
 import {
   testBufferAadhar,
+  testBufferNonCard,
   testBufferPan,
   textAadhar,
   textPan,
+  wrongText,
 } from "./testData";
 
-// take a test image
-
-// test("should return the ip string", () => {
-//   const txt = hello("hey");
-//   expect(txt).toBe("hey");
-// });
-
-// this is not a unit test this is an integration test
 test("Should run the main function successfully for aadhar", async () => {
   const op = await main(testBufferAadhar);
   if (!op) {
@@ -31,13 +26,26 @@ test("Should run the main funtion successfully for PAN", async () => {
   expect(op.panName).toBe("RISHABH NAGAR");
 });
 
-// write unit tests for
-
-test("verify card should be run successfully", () => {
-  const op1 = verifyCard(textAadhar);
-  expect(op1).toBe("aadhar");
-  const op2 = verifyCard(textPan);
-  expect(op2).toBe("pan");
+test("Should run the main funtion unsuccessfully for non-card image buffer", async () => {
+  try {
+    const op = await main(testBufferNonCard);
+  } catch (error) {
+    const thrownError = error;
+  }
+  expect(401);
 });
 
-// write unit tests for extract function
+test("verify card should be run successfully", () => {
+  const op = verifyCard(textAadhar, cardVerifyConfig);
+  expect(op).toBe("aadhar");
+});
+
+test("verify card should be run successfully", () => {
+  const op = verifyCard(textPan, cardVerifyConfig);
+  expect(op).toBe("pan");
+});
+
+test("verify card should return false for wrong test data", () => {
+  const op = verifyCard(wrongText, cardVerifyConfig);
+  expect(op).toBe(false);
+});

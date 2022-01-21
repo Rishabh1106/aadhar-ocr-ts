@@ -1,18 +1,20 @@
 import { Request, NextFunction, Response } from "express";
 import Logger from "../logger/logger";
+import { handleError } from "./customErrorClass";
 
-export const errorLoggerWinston = (
+export const errorHandler = (
   err,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  console.log(err.message);
   Logger.error(
-    `Error Status Code : ${err.status || 500} - Message :  ${
+    `Error Status Code : ${err.statusCode || 500} - Message :  ${
       err.message
     } - URL : ${req.originalUrl} - Method : ${
       req.method
     } - Body : ${JSON.stringify(req.body)} - IP : ${req.ip}`
   );
-  next(err);
+  handleError(err, res);
 };

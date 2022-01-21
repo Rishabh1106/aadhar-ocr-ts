@@ -4,4 +4,5 @@ export const verifyCard = (text: string, cardVerifyConfig: Object) => {
       return key;
     }
   }
+  return false;
 };

@@ -12,6 +12,7 @@ const imageToBuffer = (filePath: string) => {
 
 export const testBufferAadhar = imageToBuffer("./test-images/my-aadhar.jpg");
 export const testBufferPan = imageToBuffer("./test-images/my-pan.jpg");
+export const testBufferNonCard = imageToBuffer("./test-images/non-card.png");
 export const textAadhar =
   "भारत सरकार\n" +
   "GOVERNMENT OF INDIA\n" +
@@ -40,3 +41,12 @@ export const textPan =
   "Nagar.\n" +
   "हस्ताक्षर/Signature\n" +
   "12022018\n";
+
+export const wrongText =
+  "भारत सरकार\n" +
+  "ऋषभ नागर\n" +
+  "Rishabh Nagar\n" +
+  "जन्म तिथि/ DOB: 11/06/1999\n" +
+  "पुरुष / MALE\n" +
+  "9884 7598 2395\n" +
+  "मेरा आधार, मेरी पहचान\n";

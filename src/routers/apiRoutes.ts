@@ -1,6 +1,7 @@
 import express from "express";
 import multer from "multer";
 import { apiController } from "../controllers/apiController";
+import { wrapperFunction } from "./wrapperFunction";
 
 const router = express.Router();
 
@@ -15,6 +16,6 @@ const uploadFile = (req, res, next) => {
   });
 };
 
-router.post("/", uploadFile, apiController);
+router.post("/", uploadFile, wrapperFunction(apiController));
 
 export = router;
