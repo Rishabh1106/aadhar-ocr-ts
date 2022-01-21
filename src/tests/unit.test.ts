@@ -27,13 +27,12 @@ test("Should run the main funtion successfully for PAN", async () => {
 });
 
 test("Should run the main funtion unsuccessfully for non-card image buffer", async () => {
-  var thrownError
   try {
     const op = await main(testBufferNonCard);
   } catch (error) {
-    thrownError = error;
+    var thrownError = error;
   }
-  expect(thrownError.message).toBe('Card type can not be detected');
+  expect(thrownError.message).toBe("Card type can not be detected");
 });
 
 test("verify card should be run successfully", () => {

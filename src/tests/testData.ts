@@ -1,8 +1,4 @@
 import { readFileSync } from "fs";
-// const testImage = readFileSync("./test-images/my-aadhar.jpg");
-// const str = testImage.toString("base64");
-// export const testBuffer = Buffer.from(str, "base64");
-// write unit tests for main services
 
 const imageToBuffer = (filePath: string) => {
   const testImage = readFileSync(filePath);
