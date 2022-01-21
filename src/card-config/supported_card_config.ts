@@ -1,5 +1,5 @@
-import { aadharConfig } from "./aadhar-config";
-import { panConfig } from "./pan-config";
+import { aadharConfig } from "./aadhar_config";
+import { panConfig } from "./pan_config";
 
 interface objInterface {
   [key: string]: any;

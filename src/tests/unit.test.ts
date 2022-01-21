@@ -1,6 +1,6 @@
-import { cardVerifyConfig } from "../card-config/card-verify-config";
-import { main } from "../services/mainService";
-import { verifyCard } from "../services/verifyCardService";
+import { cardVerifyConfig } from "../card-config/card_verify_config";
+import { main } from "../services/main_service";
+import { verifyCard } from "../services/verify_card_service";
 import {
   testBufferAadhar,
   testBufferNonCard,

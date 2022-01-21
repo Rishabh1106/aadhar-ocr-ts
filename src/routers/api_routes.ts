@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
-import { apiController } from "../controllers/apiController";
-import { wrapperFunction } from "./wrapperFunction";
+import { apiController } from "../controllers/api_controller";
+import { wrapperFunction } from "./wrapper_function";
 
 const router = express.Router();
 

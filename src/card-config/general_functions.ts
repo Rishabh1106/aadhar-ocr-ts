@@ -1,4 +1,4 @@
-import { detectFaces, funcJimp } from "../services/mainService";
+import { detectFaces, funcJimp } from "../services/main_service";
 
 export const photoExtraction = async (inputBuffer: Buffer) => {
   const faces = await detectFaces(inputBuffer);

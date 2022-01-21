@@ -4,11 +4,11 @@ import vision from "@google-cloud/vision";
 import Jimp from "jimp";
 import _ from "lodash";
 import { error } from "console";
-import { verifyCard } from "./verifyCardService";
-import { extractFunction } from "./extractService";
-import { supportedCards } from "../card-config/supportedCard-config";
-import { cardVerifyConfig } from "../card-config/card-verify-config";
-import { ValidationError } from "../middleware/customErrorClass";
+import { verifyCard } from "./verify_card_service";
+import { extractFunction } from "./extract_service";
+import { supportedCards } from "../card-config/supported_card_config";
+import { cardVerifyConfig } from "../card-config/card_verify_config";
+import { ValidationError } from "../middleware/custom_error_class";
 
 export const keyJSON = {
   type: process.env.type,

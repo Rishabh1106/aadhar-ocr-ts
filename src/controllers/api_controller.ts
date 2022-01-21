@@ -1,5 +1,5 @@
-import { ValidationError } from "../middleware/customErrorClass";
-import { main } from "../services/mainService";
+import { ValidationError } from "../middleware/custom_error_class";
+import { main } from "../services/main_service";
 
 export const apiController = async (req, res) => {
   if (!req.file) {

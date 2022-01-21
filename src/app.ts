@@ -1,10 +1,10 @@
 import express from "express";
 export const app = express();
 import { reqResLogger } from "./logger/req_res_logger";
-import { errorHandler } from "./middleware/loggerMiddleware";
-import router from "./routers/apiRoutes";
+import { errorHandler } from "./middleware/logger_middleware";
+import router from "./routers/api_routes";
 
-//app.use(reqResLogger);
+app.use(reqResLogger);
 app.use("/api", router);
 app.use(errorHandler);
 

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { photoExtraction } from "./generalFunctions";
+import { photoExtraction } from "./general_functions";
 
 export const panConfig = {
   panNumber: (text: string) => {
