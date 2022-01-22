@@ -6,8 +6,12 @@ const imageToBuffer = (filePath: string) => {
   return Buffer.from(str, "base64");
 };
 
-export const testBufferAadhar = imageToBuffer("./test-images/my-aadhar.jpg");
-export const testBufferPan = imageToBuffer("./test-images/my-pan.jpg");
+export const testBufferAadhar1 = imageToBuffer("./test-images/my-aadhar.jpg");
+export const testBufferAadhar2 = imageToBuffer("./test-images/monk.jpg");
+export const testBufferAadhar3 = imageToBuffer("./test-images/radhey.jpg");
+export const testBufferAadhar4 = imageToBuffer("./test-images/sallu.jpg");
+export const testBufferPan1 = imageToBuffer("./test-images/my-pan.jpg");
+export const testBufferPan2 = imageToBuffer("./test-images/pan-test2.jpg");
 export const testBufferNonCard = imageToBuffer("./test-images/non-card.png");
 export const textAadhar =
   "भारत सरकार\n" +

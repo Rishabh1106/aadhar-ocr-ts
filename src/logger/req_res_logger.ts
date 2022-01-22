@@ -5,7 +5,7 @@ import uuid from "node-uuid";
 const { timestamp, label } = winston.format;
 export const reqResLogger = expressWinston.logger({
   transports: [
-    new winston.transports.Console(),
+    //new winston.transports.Console(),
     new winston.transports.File({ filename: "logs/req-res.log" }),
     new winston.transports.File({ filename: "logs/all.log" }),
   ],

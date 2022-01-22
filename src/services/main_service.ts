@@ -6,8 +6,8 @@ import _ from "lodash";
 import { error } from "console";
 import { verifyCard } from "./verify_card_service";
 import { extractFunction } from "./extract_service";
-import { supportedCards } from "../card-config/supported_card_config";
-import { cardVerifyConfig } from "../card-config/card_verify_config";
+import { supportedCards } from "../card_config/supported_card_config";
+import { cardVerifyConfig } from "../card_config/card_verify_config";
 import { ValidationError } from "../middleware/custom_error_class";
 
 export const keyJSON = {
@@ -64,5 +64,9 @@ export const main = async (inputBuffer: Buffer) => {
   if (!cardType) {
     throw new ValidationError("Card type can not be detected", 401);
   }
-  return await extractFunction(supportedCards[cardType], description, inputBuffer);
+  return await extractFunction(
+    supportedCards[cardType],
+    description,
+    inputBuffer
+  );
 };
