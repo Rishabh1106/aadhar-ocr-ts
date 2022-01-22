@@ -64,5 +64,5 @@ export const main = async (inputBuffer: Buffer) => {
   if (!cardType) {
     throw new ValidationError("Card type can not be detected", 401);
   }
-  return extractFunction(supportedCards[cardType], description, inputBuffer);
+  return await extractFunction(supportedCards[cardType], description, inputBuffer);
 };
