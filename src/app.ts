@@ -9,6 +9,10 @@ app.use("/api", router);
 app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`server running at port : ${port}`);
-});
+app
+  .listen(port, () => {
+    console.log(`server running at port : ${port}`);
+  })
+  .on("error", (e) => {
+    console.log("Error : ", e.message);
+  });
