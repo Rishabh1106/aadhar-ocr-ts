@@ -31,6 +31,12 @@ export const detectFaces = async (imageBuffer: Buffer) => {
   const request = { image: { content: imageBuffer } };
   const results = await client.faceDetection(request);
   const faces = _.first(results).faceAnnotations;
+  if (_.isEmpty(faces)) {
+    throw new ValidationError(
+      "Face not detected. Please enter a document with valid face",
+      401
+    );
+  }
   return faces;
 };
 
@@ -62,7 +68,10 @@ export const main = async (inputBuffer: Buffer) => {
   const description = _.first(result).description;
   const cardType = verifyCard(description, cardVerifyConfig);
   if (!cardType) {
-    throw new ValidationError("Card type can not be detected", 401);
+    throw new ValidationError(
+      "Card type can not be detected. Please enter a valid document or clear photo of document!",
+      401
+    );
   }
   return await extractFunction(
     supportedCards[cardType],
