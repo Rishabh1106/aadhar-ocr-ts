@@ -24,7 +24,7 @@ export const keyJSON = {
 };
 
 const client = new vision.ImageAnnotatorClient({
-  keyFile: "./google_credentials.json",
+  keyFile: "./google-credentials.json",
 });
 
 export const detectFaces = async (imageBuffer: Buffer) => {
